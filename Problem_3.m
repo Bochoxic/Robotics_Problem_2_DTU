@@ -1,25 +1,10 @@
+%% Robot parameters
+robotParameters;
+
+%% Problem 3 parameters
 angle = linspace(0,2*pi,37)';
-p_0 = [150*ones(1,37); zeros(1,37); 120*ones(1,37)]'+32*[zeros(1,37); cos(angle)'; sin(angle)']';
-x = p_0(:,1);
-y = p_0(:,2);
-z = p_0(:,3);
-d1 = 50;
-a2 = 93;
-a3 = 93;
-a4 = 50;
-theta_1 = atan2(y,x);
-x_c = x - a4*cos(theta_1);
-y_c = y - a4*sin(theta_1);
-r = sqrt(x_c.^2+y_c.^2);
-s = z - d1;
-c3 = (r.^2 + s.^2 - a2^2 - a3^2)/(2*a2*a3);
-theta_3_1 = atan2((sqrt(1 - c3.^2)),(c3));
-theta_3_2 = atan2((-sqrt(1 - c3.^2)),(c3));
-theta_2_1 = atan2(s,r) - atan2((a3.*sin(theta_3_1)),(a2+a3*cos(theta_3_1)));
-theta_2_2 = atan2(s,r) - atan2((a3.*sin(theta_3_2)),(a2+a3*cos(theta_3_2)));
-theta_4_1 = -(theta_3_1 + theta_2_1);
-theta_4_2 = -(theta_3_2 + theta_2_2);
-thetas_1_rad = [theta_1'; theta_2_1'; theta_3_1'; theta_4_1']';
-thetas_2_rad = [theta_1'; theta_2_2'; theta_3_2'; theta_4_2']';
-thetas_1_deg = rad2deg(thetas_1_rad);
-thetas_2_deg = rad2deg(thetas_2_rad);
+
+[x, y, z] =circleCoordinates(angle);
+
+%% Joint angles calculation from stilus tip coordinates. (last link horizontal)
+[thetas_1_deg, thetas_2_deg, thetas_1_rad, thetas_2_rad] = jointAnglesCalculation(x,y,z);

@@ -1,0 +1,29 @@
+clc; clear all;
+% Problem 5: Compute the joint velocities q_ at 'phi=2, along the path from Problem 3, so
+% that the stylus tip velocity is v04 = [0; 0; 3]mm/s and x_dot 4 = [?; ?; 0].
+% Hint: the last quantity x_ 4, you have not seen it as such in the course before, so you need to
+% think about how to interpret it in terms of angular velocities.
+
+phi = 2;
+v04 = [0; 0; 3];
+w4 = [0; 0; 0];
+
+% Obtain coordinates for phi = 2
+[x,y,z] = circleCoordinates(phi);
+
+% Obtain joint angles for phi = 2
+[thetas_1_deg, thetas_2_deg, thetas_1_rad, thetas_2_rad] = jointAnglesCalculation(x,y,z);
+
+% Compute jacobian for phi = 2
+[J4, J5] = JacobianMatrix(thetas_1_rad(:,1), thetas_1_rad(:,2), thetas_1_rad(:,3), thetas_1_rad(:,4));
+
+% Inverse velocity calculation: As Jacobian matrix is not squared, the
+% inverse of the jacobian will be computed as: (J'*J)^-1 * J'
+J4_inv = (J4'*J4)^-1 * J4';
+
+% Joint velocities are calculated as q_dot = J_inv * [v_dot; w_dot]
+q_dot = J4_inv * [v04; w4];
+
+fprintf("Joint velocities for phi = 2: \n")
+fprintf("q1_dot = %f\n q2_dot = %f\n q3_dot = %f\n q4_dot = %f\n ", ...
+    q_dot(1), q_dot(2), q_)
