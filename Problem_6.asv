@@ -19,6 +19,4 @@ qddC0 = qddB2;
 vC2 = [0; 25; 0];
 qddC2 = qddC0;
 vD0 = vC2;
-qddD0 = qddC2;
-vD2 = [0; 0; 0];
-qddD2 = qddD0; 
+qddD0 = qddC2
