@@ -23,7 +23,7 @@ for i = 1: length(knot_points)-1
     [q_1, ~, ~, q_1_dot] = process_velocities(angle(knot_points(i+1)+1), v(i,4:6)', w, config);
    
     for k= 1:length(q_0)
-        A(k,:,i) = interpoliation_functions(q_0(k), q_0_dot(k), qdd(i,k), q_1(k), q_1_dot(k), qdd(i,k+4), tin, ta);
+        A(k,:,i) = interpolation_functions(q_0(k), q_0_dot(k), qdd(i,k), q_1(k), q_1_dot(k), qdd(i,k+4), tin, ta);
         
     end
 end
