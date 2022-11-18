@@ -1,8 +1,7 @@
-clear all; clc; close all;
+clear all; clc;
 Problem_6;
-close all;
 
-n_interpolations = 100;  % Number of intermolations made through each segment
+n_interpolations = 10;  % Number of intermolations made through each segment
 
 % Prepare variables for the for loop
 n_segments = size(A,3);
@@ -47,26 +46,38 @@ figure
 t = tiledlayout(2,2);   % Divide the figure in subplots
 
 nexttile(1)
-plot(rad2deg(q1),'b');
-title("theta 1")
+plot(rad2deg(angle_circle),rad2deg(q1),'b');
+title("Theta 1")
+xlabel("Circle trajectory (Deg)")
+ylabel("Joint angle (Deg)")
+xlim([min(rad2deg(angle_circle)) max(rad2deg(angle_circle))])
 hold on
 grid on
 
 nexttile(2)
-plot(rad2deg(q2),'b');
-title("theta 2")
+plot(rad2deg(angle_circle),rad2deg(q2),'b');
+title("Theta 2")
+xlabel("Circle trajectory (Deg)")
+ylabel("Joint angle (Deg)")
+xlim([min(rad2deg(angle_circle)) max(rad2deg(angle_circle))])
 hold on
 grid on
 
 nexttile(3)
-plot(rad2deg(q3),'b');
-title("theta 3")
+plot(rad2deg(angle_circle),rad2deg(q3),'b');
+title("Theta 3")
+xlabel("Circle trajectory (Deg)")
+ylabel("Joint angle (Deg)")
+xlim([min(rad2deg(angle_circle)) max(rad2deg(angle_circle))])
 hold on
 grid on
 
 nexttile(4)
-plot(rad2deg(q4),'b');
-title("theta 4")
+plot(rad2deg(angle_circle),rad2deg(q4),'b');
+title("Theta 4")
+xlabel("Circle trajectory (Deg)")
+ylabel("Joint angle (Deg)")
+xlim([min(rad2deg(angle_circle)) max(rad2deg(angle_circle))])
 hold on
 grid on
 

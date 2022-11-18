@@ -8,6 +8,7 @@ angle = linspace(0,2*pi,37)';
 
 %% Joint angles calculation from stilus tip coordinates. (last link horizontal)
 [thetas_1_deg, thetas_2_deg, thetas_1_rad, thetas_2_rad] = jointAnglesCalculation(x,y,z);
+figure
 plot3(x,y,z)
 grid on
 title("Problem 3")
