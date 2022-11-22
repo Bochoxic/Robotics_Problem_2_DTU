@@ -1,4 +1,7 @@
 clear all; clc;
+% if call = 1 script run from here. if call>1 script is called 
+stack=dbstack; call = size(stack,1);
+
 Problem_6;
 
 n_interpolations = 10;  % Number of intermolations made through each segment
@@ -41,71 +44,75 @@ angle_circle = linspace(0,2*pi,n_points)';
 
 interpolated_error = sqrt((x_int-x_c).^2+(y_int-y_c).^2+(z_int-z_c).^2);
 
-% Plot joint angles for each segment
-figure
-t = tiledlayout(2,2);   % Divide the figure in subplots
 
-nexttile(1)
-plot(rad2deg(angle_circle),rad2deg(q1),'b');
-title("Theta 1")
-xlabel("Circle trajectory (Deg)")
-ylabel("Joint angle (Deg)")
-xlim([min(rad2deg(angle_circle)) max(rad2deg(angle_circle))])
-hold on
-grid on
 
-nexttile(2)
-plot(rad2deg(angle_circle),rad2deg(q2),'b');
-title("Theta 2")
-xlabel("Circle trajectory (Deg)")
-ylabel("Joint angle (Deg)")
-xlim([min(rad2deg(angle_circle)) max(rad2deg(angle_circle))])
-hold on
-grid on
-
-nexttile(3)
-plot(rad2deg(angle_circle),rad2deg(q3),'b');
-title("Theta 3")
-xlabel("Circle trajectory (Deg)")
-ylabel("Joint angle (Deg)")
-xlim([min(rad2deg(angle_circle)) max(rad2deg(angle_circle))])
-hold on
-grid on
-
-nexttile(4)
-plot(rad2deg(angle_circle),rad2deg(q4),'b');
-title("Theta 4")
-xlabel("Circle trajectory (Deg)")
-ylabel("Joint angle (Deg)")
-xlim([min(rad2deg(angle_circle)) max(rad2deg(angle_circle))])
-hold on
-grid on
-
-title(t,"Interpolated joint trajectory")
-
-% Plot interpolated end effector position vs perfect circle
-figure
-t = tiledlayout(5,2)
-
-nexttile([4 2])
-plot3(x,y,z)
-hold on
-plot3(x_int,y_int, z_int)
-grid on
-xlim([min(x_int)-30 max(x_int)+30])
-xlabel("X (mm)")
-ylim([min(y_int)-30 max(y_int)+30])
-ylabel("Y (mm)")
-zlim([min(z_int)-30 max(z_int)+30])
-zlabel("Z(mm)")
-hl = legend("Desired trajecotry", "Interpolated trajectory")
-hl.Layout.Tile = 'east'
-title("Interpolated trajectory vs Perfect circle")
-
-nexttile('south')
-plot(rad2deg(angle_circle),interpolated_error,'k-')
-xlabel("Circle trajectory (Deg)")
-ylabel("Error (mm)")
-xlim([0 max(rad2deg(angle_circle))])
-grid on
-title("Interpolated trajectory error")
+if string(mfilename) == string(stack(end).name)
+    % Plot joint angles for each segment
+    figure
+    t = tiledlayout(2,2);   % Divide the figure in subplots
+    
+    nexttile(1)
+    plot(rad2deg(angle_circle),rad2deg(q1),'b');
+    title("Theta 1")
+    xlabel("Circle trajectory (Deg)")
+    ylabel("Joint angle (Deg)")
+    xlim([min(rad2deg(angle_circle)) max(rad2deg(angle_circle))])
+    hold on
+    grid on
+    
+    nexttile(2)
+    plot(rad2deg(angle_circle),rad2deg(q2),'b');
+    title("Theta 2")
+    xlabel("Circle trajectory (Deg)")
+    ylabel("Joint angle (Deg)")
+    xlim([min(rad2deg(angle_circle)) max(rad2deg(angle_circle))])
+    hold on
+    grid on
+    
+    nexttile(3)
+    plot(rad2deg(angle_circle),rad2deg(q3),'b');
+    title("Theta 3")
+    xlabel("Circle trajectory (Deg)")
+    ylabel("Joint angle (Deg)")
+    xlim([min(rad2deg(angle_circle)) max(rad2deg(angle_circle))])
+    hold on
+    grid on
+    
+    nexttile(4)
+    plot(rad2deg(angle_circle),rad2deg(q4),'b');
+    title("Theta 4")
+    xlabel("Circle trajectory (Deg)")
+    ylabel("Joint angle (Deg)")
+    xlim([min(rad2deg(angle_circle)) max(rad2deg(angle_circle))])
+    hold on
+    grid on
+    
+    title(t,"Interpolated joint trajectory")
+    
+    % Plot interpolated end effector position vs perfect circle
+    figure
+    t = tiledlayout(5,2)
+    
+    nexttile([4 2])
+    plot3(x,y,z)
+    hold on
+    plot3(x_int,y_int, z_int)
+    grid on
+    xlim([min(x_int)-30 max(x_int)+30])
+    xlabel("X (mm)")
+    ylim([min(y_int)-30 max(y_int)+30])
+    ylabel("Y (mm)")
+    zlim([min(z_int)-30 max(z_int)+30])
+    zlabel("Z(mm)")
+    hl = legend("Desired trajecotry", "Interpolated trajectory")
+    hl.Layout.Tile = 'east'
+    title("Interpolated trajectory vs Perfect circle")
+    
+    nexttile('south')
+    plot(rad2deg(angle_circle),interpolated_error,'k-')
+    xlabel("Circle trajectory (Deg)")
+    ylabel("Error (mm)")
+    xlim([0 max(rad2deg(angle_circle))])
+    grid on
+    title("Interpolated trajectory error")
+end

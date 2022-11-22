@@ -1,4 +1,7 @@
 clear all; clc;
+% if call = 1 script run from here. if call>1 script is called 
+stack=dbstack; call = size(stack,1);
+
 % P3 parameters
 knot_points = [0,9,18,27,36];
 n_parameters = 6;
@@ -24,9 +27,5 @@ for i = 1: length(knot_points)-1
    
     for k= 1:length(q_0)
         A(k,:,i) = interpolation_functions(q_0(k), q_0_dot(k), qdd(i,k), q_1(k), q_1_dot(k), qdd(i,k+4), tin, ta);
-        
     end
 end
-
-
-
