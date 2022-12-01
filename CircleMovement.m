@@ -1,4 +1,4 @@
-angle = linspace(0,2*pi,37)';
+angle = linspace(0,2*pi,100)';
 [x, y, z] =circleCoordinates(angle);
 
 while true
