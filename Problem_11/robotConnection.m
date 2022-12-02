@@ -1,5 +1,5 @@
 clear all; close all; clc;
-py.importlib.import_module('numpy')
+py.importlib.import_module('numpy');
 
 x_res = 640;
 y_res = 480;
@@ -25,7 +25,7 @@ videoPlayer = vision.VideoPlayer('Position', [200 200 [frameSize(2), frameSize(1
 % Init Robot
 robot = MyRobot();
 assert(robot.is_robot_connected(),"Robot not connected properly");
-robot.move_j(40,-90, 0, -70);
+robot.move_j(0,0,0,0);
 cw = 0;
 pause(2);
 
@@ -38,7 +38,7 @@ while true
         g_p = py.numpy.array(img(:,:,2)');
         b_p = py.numpy.array(img(:,:,3)');
         
-        red_smart = double(pyrunfile("test.py","red_smart", r = r_p, g = g_p, b = b_p))
+        red_smart = double(pyrunfile("smartiesDetector.py","red_smart", r = r_p, g = g_p, b = b_p))
         
         if ~isempty(red_smart)
             x_smart = red_smart(:,:,1);
