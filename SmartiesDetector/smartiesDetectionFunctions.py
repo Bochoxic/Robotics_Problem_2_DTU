@@ -34,30 +34,37 @@ def smartiesDetection(img_bgr,):
                 red_smarties_img[i,j,2] =0
 
         cv.imshow("Red smarties", red_smarties_img)
-        cv.waitKey(0)
+        cv.waitKey(1)
     red_smarties_gray = cv.cvtColor(red_smarties_img, cv.COLOR_BGR2GRAY)
 
     ## IMAGE OPENING TO CLOSE RED SMARTIES AREAS DETECTED ##
-    kernel = np.ones((10, 10),np.uint8)
-    opening = cv.morphologyEx(red_smarties_gray, cv.MORPH_OPEN, kernel)
-    #opening_gbr = cv.cvtColor(opening, cv.COLOR_GRAY2BGR)
-    #cv.imshow("Opening", opening_gbr)
-    #cv.waitKey(1000)
+    kernel = np.ones((7, 7),np.uint8)
+    closing = cv.morphologyEx(red_smarties_gray, cv.MORPH_CLOSE, kernel)
+    closing_gbr = cv.cvtColor(closing, cv.COLOR_GRAY2BGR)
+    cv.imshow("Opening", closing_gbr)
+    cv.waitKey(1000)
+
+    ## IMAGE OPENING TO CLOSE RED SMARTIES AREAS DETECTED ##
+    kernel = np.ones((30, 30),np.uint8)
+    opening = cv.morphologyEx(closing, cv.MORPH_OPEN, kernel)
+    opening_gbr = cv.cvtColor(opening, cv.COLOR_GRAY2BGR)
+    cv.imshow("Opening", opening_gbr)
+    cv.waitKey(1000)
 
     ## RED SMARTIES EDGE DETECTION WITH CANNY ##
     img_edges = cv.Canny(opening,100,200)
 
     # Obtain closed contourns from edge detection 
-    #img_edges_gbr = cv.cvtColor(img_edges,cv.COLOR_RGB2BGR)
-    #cv.imshow("Canny",img_edges_gbr)
-    #cv.waitKey(1000)
+    img_edges_gbr = cv.cvtColor(img_edges,cv.COLOR_RGB2BGR)
+    cv.imshow("Canny",img_edges_gbr)
+    cv.waitKey(1000)
 
     smarties_cont, hierarchy = cv.findContours(img_edges, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
     img_contourns_bgr = img_bgr.copy()
     cv.drawContours(img_contourns_bgr, smarties_cont, -1, (0,255,0), 3)
 
-    #cv.imshow("Contour",img_contourns_bgr)
-    #cv.waitKey(1000)
+    cv.imshow("Contour",img_contourns_bgr)
+    cv.waitKey(1000)
 
     # CALCULATE CENTER OF EACH RED SMARTIES
 
@@ -134,10 +141,9 @@ def siftMatching(img1, img2, sift_match_threshold):
             cv.circle(img2,(int(kp2[m.trainIdx].pt[0]), int(kp2[m.trainIdx].pt[1])),5,(0, 255, 0), 1)
 
 
-    # cv.drawMatchesKnn expects list of lists as matches.
-    #img3 = cv.drawMatchesKnn(img1,kp1,img2,kp2,good,None,flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
-    #cv.imshow("Matches", img3)
-    #cv.waitKey(5000)
+    img3 = cv.drawMatchesKnn(img1,kp1,img2,kp2,good,None,flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+    cv.imshow("Matches", img3)
+    cv.waitKey(5000)
 
     return img1_sift_coord, img2_sift_coord
 
