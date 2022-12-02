@@ -4,8 +4,10 @@ function [thetas_1_deg, thetas_2_deg, thetas_1_rad, thetas_2_rad] = jointAnglesC
 
     % Inverse kinematics
     theta_1 = atan2(y,x);
-    x_c = x - a4*cos(theta_1);
-    y_c = y - a4*sin(theta_1);
+%   x_c = x - a4*cos(theta_1);
+%   y_c = y - a4*sin(theta_1);
+    x_c = x;
+    y_c = y;
     r = sqrt(x_c.^2+y_c.^2);
     s = z - d1;
     c3 = (r.^2 + s.^2 - a2^2 - a3^2)/(2*a2*a3);

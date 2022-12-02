@@ -1,6 +1,5 @@
 function thetas = movementrobot(robot, position)
-    thetas_1_deg = inversekinematics(position(1), position(2), position(3));
-    %thetas = robot.inverse(position(1), position(2), position(3),0);
+    thetas_1_deg = (position(1), position(2), position(3));
     robot.move_j(thetas_1_deg(1), thetas_1_deg(2), thetas_1_deg(3), (thetas_1_deg(4)))
     thetas = thetas_1_deg;
     % Angle 1 : servo 1 goes -130 to 130

@@ -1,4 +1,4 @@
-function [J4, J5] = JacobianMatrix(theta1,theta2, theta3, theta4)
+function [J4, J5, T04, T05] = JacobianMatrix(theta1,theta2, theta3, theta4)
 
 [T01, T12, T23, T34, T45] = homogeneousTransformationMatrices(theta1, theta2, theta3, theta4);
 
