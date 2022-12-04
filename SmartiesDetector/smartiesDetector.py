@@ -21,9 +21,9 @@ cy = 257.2320
 
 
 # Read image
-img_bgr_1 = cv.imread("robot_photos/rob1.jpeg")
+img_bgr_1 = cv.imread("img_1.png")
 
-img_bgr_2 = cv.imread("robot_photos/rob2.jpeg")
+img_bgr_2 = cv.imread("img_2.png")
 
 ### BORRAR ESTO CUANDO SE CALIBRE LA CÁMARA ###
 

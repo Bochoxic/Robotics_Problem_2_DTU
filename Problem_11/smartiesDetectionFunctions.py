@@ -9,7 +9,7 @@ def sort_list(list1, list2):
 
     return z
 
-def smartiesDetection(img_bgr,):
+def smartiesDetection(img_bgr,close_kernel, open_kernel):
 
     # Get image in HSV 
     img_hsv = cv.cvtColor(img_bgr,cv.COLOR_BGR2HSV)
@@ -33,14 +33,21 @@ def smartiesDetection(img_bgr,):
                 red_smarties_img[i,j,1] = 255
                 red_smarties_img[i,j,2] =0
 
-        cv.imshow("Red smarties", red_smarties_img)
-        cv.waitKey(0)
+        #cv.imshow("Red smarties", red_smarties_img)
+        #cv.waitKey(1)
     red_smarties_gray = cv.cvtColor(red_smarties_img, cv.COLOR_BGR2GRAY)
 
     ## IMAGE OPENING TO CLOSE RED SMARTIES AREAS DETECTED ##
-    kernel = np.ones((10, 10),np.uint8)
-    opening = cv.morphologyEx(red_smarties_gray, cv.MORPH_OPEN, kernel)
-    #opening_gbr = cv.cvtColor(opening, cv.COLOR_GRAY2BGR)
+    kernel = np.ones((close_kernel, close_kernel),np.uint8)
+    closing = cv.morphologyEx(red_smarties_gray, cv.MORPH_CLOSE, kernel)
+    closing_gbr = cv.cvtColor(closing, cv.COLOR_GRAY2BGR)
+    #cv.imshow("Opening", closing_gbr)
+    #cv.waitKey(1000)
+
+    ## IMAGE OPENING TO CLOSE RED SMARTIES AREAS DETECTED ##
+    kernel = np.ones((open_kernel, open_kernel),np.uint8)
+    opening = cv.morphologyEx(closing, cv.MORPH_OPEN, kernel)
+    opening_gbr = cv.cvtColor(opening, cv.COLOR_GRAY2BGR)
     #cv.imshow("Opening", opening_gbr)
     #cv.waitKey(1000)
 
@@ -48,16 +55,16 @@ def smartiesDetection(img_bgr,):
     img_edges = cv.Canny(opening,100,200)
 
     # Obtain closed contourns from edge detection 
-    #img_edges_gbr = cv.cvtColor(img_edges,cv.COLOR_RGB2BGR)
-    #cv.imshow("Canny",img_edges_gbr)
-    #cv.waitKey(1000)
+    img_edges_gbr = cv.cvtColor(img_edges,cv.COLOR_RGB2BGR)
+    cv.imshow("Canny",img_edges_gbr)
+    cv.waitKey(0)
 
     smarties_cont, hierarchy = cv.findContours(img_edges, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
     img_contourns_bgr = img_bgr.copy()
     cv.drawContours(img_contourns_bgr, smarties_cont, -1, (0,255,0), 3)
 
-    #cv.imshow("Contour",img_contourns_bgr)
-    #cv.waitKey(1000)
+    cv.imshow("Contour",img_contourns_bgr)
+    cv.waitKey(0)
 
     # CALCULATE CENTER OF EACH RED SMARTIES
 
@@ -75,7 +82,7 @@ def smartiesDetection(img_bgr,):
         x = int(np.mean(pts[0]))
         y = int(np.mean(pts[1]))
         smarties_coord.append([x, y])
-
+        print("")
         #cv.circle(cimg,(int(np.mean(pts[1])),int(np.mean(pts[0]))),5,(0,0,255),5)
         #cv.imshow("Smarties detection",cimg)
         #cv.waitKey(5000)
@@ -134,30 +141,26 @@ def siftMatching(img1, img2, sift_match_threshold):
             cv.circle(img2,(int(kp2[m.trainIdx].pt[0]), int(kp2[m.trainIdx].pt[1])),5,(0, 255, 0), 1)
 
 
-    # cv.drawMatchesKnn expects list of lists as matches.
-    #img3 = cv.drawMatchesKnn(img1,kp1,img2,kp2,good,None,flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+    img3 = cv.drawMatchesKnn(img1,kp1,img2,kp2,good,None,flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
     #cv.imshow("Matches", img3)
-    #cv.waitKey(5000)
+    #cv.waitKey(1000)
 
     return img1_sift_coord, img2_sift_coord
 
 
 def distanceTriangulation(img1_sift_coord, img2_sift_coord, baseline, focal_length, focal_length_x, focal_length_y, cx, cy):
 
-    d = []
-    x_dist = []
-    y_dist = []
-    for i in range(len(img1_sift_coord)):
-        # Get X from the optical center of the camera
-        x1 = img1_sift_coord[i][0] - cx
-        x2 = img2_sift_coord[i][0] - cx
-
-        # Compute disparity (distance between two points)
-        disparity = x1-x2
-        # Compute depth and the X coordinate in camera coordinates (SR fixed in camera)
-        distance = baseline * focal_length / disparity
-        d.append(distance)
-        x_dist.append(distance / focal_length * (x1 - cx))
-        y_dist.append(distance / focal_length_y * (x2 - cy))
+    # Get Y from the optical center of the camera
+    y1 = img1_sift_coord[0] - cy
+    y2 = img2_sift_coord[0] - cy
+    x1 = img1_sift_coord[1] - cx
+    print("1")
+    # Compute disparity (distance between two points)
+    disparity = y1-y2
+    # Compute depth and the X coordinate in camera coordinates (SR fixed in camera)
+    distance = baseline * focal_length / disparity
+    d = distance
+    y_dist = distance / focal_length * y1
+    x_dist = distance / focal_length_y * x1
 
     return d, x_dist, y_dist

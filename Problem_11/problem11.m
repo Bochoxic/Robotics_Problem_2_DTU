@@ -1,11 +1,43 @@
 %% Initialize Robot
+disp("Initializing robot")
 robot = initializeRobot()
 cam = webcam("C270 HD WEBCAM")
-%% Move to first position
-first_angle = [0, -40, -40, -80]';
-robot.move_j(first_angle(1),first_angle(2),first_angle(3),first_angle(4)) 
-first_position = direct_kinematics(first_angle);
-pause(5)
+%% Take pictures
+first_picture = [82,0,-78];
+second_picture = [82,0,-70];
+
+disp("Taking first picture")
+movementrobot(robot, first_picture)
+pause(2)
+imshow(snapshot(cam),[])
+%waiting = input("Press some key to continue","s");
 img_1 = snapshot(cam);
-% movementrobot(robot, [-first_position(1), first_position(2), first_position(3)])
+
+%imwrite(snapshot(cam),"Robotics_Problem_2_DTU\Problem_11\img_1.png")
+
+disp("Taking second picture")
+movementrobot(robot, second_picture)
+pause(2)
+imshow(snapshot(cam),[])
+img_2 = snapshot(cam);
+%waiting = input("Press some key to continue","s");
+%imwrite(snapshot(cam),"Robotics_Problem_2_DTU\Problem_11\img_2.png")
+
+
 %% Try first picture
+% la posición original es la de 78
+% y es el tercero y no se cambia el signo -24
+% x es el segundo y se cambia al signo y (dividir 10)
+
+runPython
+size(smarties_position,1)
+
+disp("Touching smarties")
+for i = 1:size(smarties_position,1)
+    smarty_position = first_picture + smarties_position(i,:);
+    smarty_position(1) = 12;
+    movementrobot(robot, smarty_position)
+    pause(2)
+    movementrobot(robot, first_picture)
+    pause(1)
+end
