@@ -10,18 +10,14 @@ disp("Taking first picture")
 movementrobot(robot, first_picture)
 pause(2)
 imshow(snapshot(cam),[])
-%waiting = input("Press some key to continue","s");
-img_1 = snapshot(cam);
 
-%imwrite(snapshot(cam),"Robotics_Problem_2_DTU\Problem_11\img_1.png")
+img_1 = snapshot(cam);
 
 disp("Taking second picture")
 movementrobot(robot, second_picture)
 pause(2)
 imshow(snapshot(cam),[])
 img_2 = snapshot(cam);
-%waiting = input("Press some key to continue","s");
-%imwrite(snapshot(cam),"Robotics_Problem_2_DTU\Problem_11\img_2.png")
 
 
 %% Try first picture
